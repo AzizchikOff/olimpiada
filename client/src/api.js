@@ -1,6 +1,8 @@
+const BASE = import.meta.env.VITE_API_URL || '';
+
 async function req(path, opts = {}) {
   const isForm = opts.body instanceof FormData;
-  const res = await fetch(path, {
+  const res = await fetch(BASE + path, {
     ...opts,
     headers: isForm ? {} : { 'Content-Type': 'application/json' },
   });

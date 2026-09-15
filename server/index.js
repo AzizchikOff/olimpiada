@@ -82,7 +82,9 @@ CREATE TABLE IF NOT EXISTS practice_results (
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+   origin: ['https://mock-olimpiada.netlify.app', 'https://olimpiada-wfkw.onrender.com']
+}));
 
 app.use(
   express.json({
