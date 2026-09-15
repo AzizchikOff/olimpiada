@@ -82,9 +82,7 @@ CREATE TABLE IF NOT EXISTS practice_results (
 
 const app = express();
 
-app.use(cors({
-   origin: ['https://mock-olimpiada.netlify.app', 'https://olimpiada-wfkw.onrender.com']
-}));
+app.use(cors());
 
 app.use(
   express.json({
@@ -1943,6 +1941,23 @@ app.get(
     });
   })
 );
+
+
+// =====================================================
+// ADMIN AUTH
+// =====================================================
+
+app.post('/api/admin/login', (req, res) => {
+  const { login, password } = req.body;
+  const correctLogin    = process.env.ADMIN_LOGIN    || 'admin';
+  const correctPassword = process.env.ADMIN_PASSWORD || 'admin123';
+
+  if (login === correctLogin && password === correctPassword) {
+    return res.json({ ok: true });
+  }
+  res.status(401).json({ error: 'Login yoki parol noto\'g\'ri' });
+});
+
 
 
 // =====================================================

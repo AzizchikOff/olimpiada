@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Icon from '../components/Icon';
 import { useLanguage } from '../i18n';
+import api from '../api';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -9,17 +10,21 @@ export default function AdminLogin() {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-
-    if (login === 'admin' && password === 'admin123') {
+    setError('');
+    setLoading(true);
+    try {
+      await api.post('/api/admin/login', { login, password });
       localStorage.setItem('adminAuth', 'true');
       navigate('/admin');
-      return;
+    } catch (err) {
+      setError(err.message || "Login yoki parol noto'g'ri");
+    } finally {
+      setLoading(false);
     }
-
-    setError("Login yoki parol noto'g'ri");
   }
 
   return (
@@ -40,6 +45,7 @@ export default function AdminLogin() {
             onChange={(e) => setLogin(e.target.value)}
             placeholder={t('Admin login')}
             autoComplete="username"
+            disabled={loading}
           />
 
           <label>{t('Parol')}</label>
@@ -49,12 +55,13 @@ export default function AdminLogin() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder={t('Admin paroli')}
             autoComplete="current-password"
+            disabled={loading}
           />
 
           {error && <div className="admin-login-error">{error}</div>}
 
-          <button type="submit" className="admin-login-button">
-            {t('Kirish')}
+          <button type="submit" className="admin-login-button" disabled={loading}>
+            {loading ? t('Tekshirilmoqda...') : t('Kirish')}
           </button>
         </form>
 
