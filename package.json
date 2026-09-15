@@ -7,7 +7,9 @@
     "dev": "concurrently \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
     "seed": "npm --prefix server run seed",
     "build": "npm --prefix client run build",
-    "start": "npm --prefix server start"
+    "start": "npm --prefix server start",
+    "build:all": "npm --prefix server install && NODE_ENV=development npm --prefix client install && npm --prefix client run build",
+    "render-start": "npm --prefix server start"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
