@@ -19,7 +19,7 @@ export default function AdminLogin() {
       return;
     }
 
-    setError(t('Login yoki parol noto‘g‘ri'));
+    setError("Login yoki parol noto'g'ri");
   }
 
   return (
